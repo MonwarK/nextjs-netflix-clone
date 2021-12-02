@@ -21,8 +21,8 @@ export default function FeaturedSection({ featuredMovie }) {
       }}
     >
       <div className="bg-gradient-to-t from-black to-transparent bottom-0 absolute h-10 w-full" />
-      <div className="bg-black absolute w-full h-full opacity-40" />
-      <div className="absolute w-full h-full z-20 grid place-items-center">
+      <div className="bg-black absolute w-full h-full opacity-40 z-0" />
+      <div className="w-full min-h-[60vh] md:min-h-[65vh] xl:min-h-[70vh] 2xl:min-h-[75vh] z-10 grid place-items-center relative">
         <div className="md:grid grid-cols-2 px-4 py-16">
           <div>
             <h1 className="text-3xl md:text-4xl font-medium">{featuredMovie?.title}</h1>
