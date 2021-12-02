@@ -27,9 +27,9 @@ export default function profile() {
             />
             <div className="flex-1">
               <h2 className="bg-gray-500 p-1 font-medium">{auth.currentUser?.email}</h2>
-              <SubscriptionItem name="Basic Plan" description="720p" />
-              <SubscriptionItem name="Standard Plan" description="1080p" />
-              <SubscriptionItem name="Premium Plan" description="4k + HDR" />
+              <SubscriptionItem name="Basic Plan" description="720p" priceId="price_1K2NEGEvfq3zpR6OvqrHVCSi" />
+              <SubscriptionItem name="Standard Plan" description="1080p" priceId="price_1K2NEpEvfq3zpR6OP4kzle31" />
+              <SubscriptionItem name="Premium Plan" description="4k + HDR" priceId="price_1K2NFLEvfq3zpR6OOtDhIW2i" />
               <button 
                 onClick={handleSignOut}
                 className="btn w-full duration-100 mt-4"
