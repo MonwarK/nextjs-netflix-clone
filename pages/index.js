@@ -1,61 +1,30 @@
-import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { isModalOpenState } from '../atoms/movieAtom';
-import FeaturedSection from '../components/FeaturedSection';
-import Modal from '../components/Modal';
-import MovieList from '../components/MovieList';
-import { 
-  BASE_URL, 
-  TOP_RATED,
-  UPCOMING, 
-  POPULAR_MOVIES, 
-  VARIABLES 
-} from "../utilities/ApiRequests";
+import Layout from "../components/Layout";
 
-export default function Home({ 
-  popularMovies,
-  topRatedMovies,
-  upcomingMovies
-}) {  
-  const isOpen = useRecoilValue(isModalOpenState);
-  const [featuredMovie, setFeaturedMovie] = useState();
-
-  useEffect(() => {
-    const randomMovie = popularMovies[Math.round(Math.random() * 20)];
-    setFeaturedMovie(randomMovie)
-  }, [])
-
+export default function index() {
   return (
-    <div>
-      {isOpen && (
-        <Modal />
-      )}
-      <FeaturedSection featuredMovie={featuredMovie} />  
-      <MovieList title="Popular on Netflix" movies={popularMovies} />
-      <MovieList title="Top Rated Movies" movies={topRatedMovies} />
-      <MovieList title="Upcoming Movies" movies={upcomingMovies} />
-    </div>
+    <Layout isAuth={false}>
+      <div className="h-screen grid place-items-center">
+        <img
+          className="absolute z-0 brightness-50 h-full w-full object-cover top-0 left-0"
+          src="https://assets.nflxext.com/ffe/siteui/vlv3/23c72870-12c8-4682-9f55-337a083ccfa7/a51f79cc-b884-4b64-a5a9-75e04de2c383/GB-en-20211129-popsignuptwoweeks-perspective_alpha_website_large.jpg"
+          alt=""
+        />
+        <div className="relative z-10 text-center max-w-2xl mx-auto px-2">
+          <h1 className="text-2xl sm:text-5xl font-bold">Unlimited films, TV programmes and more.</h1>
+          <h2 className="text-xl sm:text-2xl my-5">Watch anywhere. Cancel at any time.</h2>
+          <p className="text-lg sm:text-xl mb-4">Ready to watch? Enter your email to create or restart your membership.</p>
+          <div className="flex">
+            <input
+              className="text-gray-700 flex-1 p-2 sm:p-4 outline-none rounded-l-md"
+              type="text"
+              placeholder="Email Address"
+            />
+            <button className="btn p-2 md:p-5 md:text-xl md:font-semibold rounded-r-md">
+              Get Started
+            </button>
+          </div>
+        </div>
+      </div>
+    </Layout>
   )
-}
-
-export async function getStaticProps() {
-  const popularMovies = await fetch(BASE_URL + POPULAR_MOVIES + VARIABLES)
-                          .then(res => res.json())
-                          .then(res => res.results)
-
-  const topRatedMovies = await fetch(BASE_URL + TOP_RATED + VARIABLES)
-                          .then(res => res.json())
-                          .then(res => res.results)
-
-  const upcomingMovies = await fetch(BASE_URL + UPCOMING + VARIABLES)
-                          .then(res => res.json())
-                          .then(res => res.results)
-
-  return {
-    props: {
-      popularMovies,
-      topRatedMovies,
-      upcomingMovies
-    }
-  }
 }

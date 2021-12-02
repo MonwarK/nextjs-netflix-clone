@@ -1,14 +1,25 @@
 import { RecoilRoot } from 'recoil'
-import 'tailwindcss/tailwind.css'
+import '../styles/globals.css'
 import Header from "../components/Header"
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../utilities/firebase';
+import Loading from '../components/Loading';
 
 function MyApp({ Component, pageProps }) {
+  const [user, loading, error] = useAuthState(auth);
+
   return (
     <RecoilRoot>
-      <Header />
-      <div className="min-h-screen text-white bg-black">
-        <Component {...pageProps} />
-      </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Header />
+          <div className="min-h-screen text-white bg-black">
+            <Component {...pageProps} />
+          </div>
+        </>
+      )}
     </RecoilRoot>
   )
 }
