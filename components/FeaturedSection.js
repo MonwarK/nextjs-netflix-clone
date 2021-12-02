@@ -12,15 +12,18 @@ export default function FeaturedSection({ featuredMovie }) {
   };
   
   return (
-    <div className="min-h-[60vh] md:min-h-[65vh] xl:min-h-[70vh] 2xl:min-h-[75vh] relative">
-      <img
-        className="absolute w-full h-full object-cover z-0 brightness-[0.65]"
-        src={`https://image.tmdb.org/t/p/original${featuredMovie?.backdrop_path}`}
-        alt=""
-      />
+    <div 
+      className="min-h-[60vh] md:min-h-[65vh] xl:min-h-[70vh] 2xl:min-h-[75vh] relative"
+      style={{
+        backgroundImage: `url(https://image.tmdb.org/t/p/original${featuredMovie?.backdrop_path})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center"
+      }}
+    >
       <div className="bg-gradient-to-t from-black to-transparent bottom-0 absolute h-10 w-full" />
+      <div className="bg-black absolute w-full h-full opacity-40" />
       <div className="absolute w-full h-full z-20 grid place-items-center">
-        <div className="md:grid grid-cols-2 px-4 py-28">
+        <div className="md:grid grid-cols-2 px-4 py-16">
           <div>
             <h1 className="text-3xl md:text-4xl font-medium">{featuredMovie?.title}</h1>
             <div className="flex items-center space-x-3 my-4">

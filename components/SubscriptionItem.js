@@ -6,7 +6,7 @@ export default function SubscriptionItem({ name, description }) {
         <p>{description}</p>
       </div>
       <button
-        className="bg-red-600 py-3 px-6 rounded-md"
+        className="bg-red-600 hover:bg-red-700 py-3 px-8 rounded-sm font-semibold duration-100"
       >
         Subscribe
       </button>
