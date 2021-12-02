@@ -20,7 +20,7 @@ export default function FeaturedSection({ featuredMovie }) {
       />
       <div className="bg-gradient-to-t from-black to-transparent bottom-0 absolute h-10 w-full" />
       <div className="absolute w-full h-full z-20 grid place-items-center">
-        <div className="md:grid grid-cols-2 px-4">
+        <div className="md:grid grid-cols-2 px-4 py-28">
           <div>
             <h1 className="text-3xl md:text-4xl font-medium">{featuredMovie?.title}</h1>
             <div className="flex items-center space-x-3 my-4">
