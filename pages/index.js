@@ -1,7 +1,7 @@
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { isModalOpenState } from '../atoms/movieAtom';
 import FeaturedSection from '../components/FeaturedSection';
-import Header from '../components/Header'
 import Modal from '../components/Modal';
 import MovieList from '../components/MovieList';
 import { 
@@ -17,15 +17,19 @@ export default function Home({
   topRatedMovies,
   upcomingMovies
 }) {  
-  const isOpen = useRecoilValue(isModalOpenState)
-  const featuredMovie = popularMovies[Math.round(Math.random() * 20)]
+  const isOpen = useRecoilValue(isModalOpenState);
+  const [featuredMovie, setFeaturedMovie] = useState();
+
+  useEffect(() => {
+    const randomMovie = popularMovies[Math.round(Math.random() * 20)];
+    setFeaturedMovie(randomMovie)
+  }, [])
 
   return (
     <div>
       {isOpen && (
         <Modal />
       )}
-      <Header /> 
       <FeaturedSection featuredMovie={featuredMovie} />  
       <MovieList title="Popular on Netflix" movies={popularMovies} />
       <MovieList title="Top Rated Movies" movies={topRatedMovies} />
