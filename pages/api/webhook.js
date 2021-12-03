@@ -1,4 +1,15 @@
+import { buffer } from "micro"
 import * as admin from "firebase-admin"
+
+const serviceAccount = require("../../utilities/permissions.json")
+
+const app = !admin.apps.length ? admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+}) : admin.app();
+
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 const fulfillOrder = async (session) => {
   console.log("Fulfilling order", session)
@@ -6,12 +17,8 @@ const fulfillOrder = async (session) => {
   return app
       .firestore()
       .collection("users")
-      .doc(session.metadata.email)
-      .collection("orders")
-      .doc(session.id).set({
-          amount: session.amount_total / 100,
-          amount_shipping: session.total_details.amount_shipping / 100,
-          images:  JSON.parse(session.metadata.images),
+      .doc(session.customer_email).set({
+          subscriptionType: session.price.product,
           timestamp: admin.firestore.FieldValue.serverTimestamp()
       })
       .then(() => {
@@ -19,48 +26,35 @@ const fulfillOrder = async (session) => {
       })
 }
 
-export default async function webhook(req, res) {
-  let data;
-  let eventType;
-  // Check if webhook signing is configured.
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+export default async (req, res) => {
+    if(req.method === "POST") {
+        const requestBuffer = await buffer(req);
+        const payload = requestBuffer.toString()
+        const sig = req.headers["stripe-signature"];
 
-  if (webhookSecret) {
-    // Retrieve the event by verifying the signature using the raw body and secret.
-    let event;
-    let signature = req.headers["stripe-signature"];
+        let event;
 
-    try {
-      event = stripe.webhooks.constructEvent(
-        req.body,
-        signature,
-        webhookSecret
-      );
-    } catch (err) {
-      console.log(`⚠️  Webhook signature verification failed.`);
-      return res.sendStatus(400);
+        try {
+            event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
+        } 
+        catch (err) {
+            return res.status(400).send(`Webhook error: ${err.message}`)
+        }
+
+        if(event.type === "checkout.session.completed") {
+            const session = event.data.object;
+
+            return fulfillOrder(session)
+                .then(() => res.status(200))
+                .catch(err => res.status(400)
+                .send(`Webhook error ${err.message}`))
+        }
     }
-    // Extract the object from the event.
-    data = event.data;
-    eventType = event.type;
-  } else {
-    data = req.body.data;
-    eventType = req.body.type;
-  }
+}
 
-  switch (eventType) {
-    case 'checkout.session.completed':
-      console.log(event.data.object)
-      break;
-    case 'invoice.paid':
-      break;
-    case 'invoice.payment_failed':
-      break;
-    case 'invoice.payment_succeeded':
-      break;
-    default:
-    // Unhandled event type
-  }
-
-  res.status(200);
+export const config = {
+    api: {
+        bodyParser: false,
+        externalResolver: true
+    }
 }
