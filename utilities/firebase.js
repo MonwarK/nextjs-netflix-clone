@@ -37,5 +37,6 @@ export {
   auth,
   signIn,
   signOut,
-  signUp
+  signUp,
+  db
 }

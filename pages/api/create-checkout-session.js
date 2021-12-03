@@ -13,6 +13,9 @@ export default async function createCheckoutSession(req, res) {
           },
         ],
         customer_email: req.body.email,
+        metadata: {
+          productId: req.body.productId,
+        },
         // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
         success_url: `${process.env.BASE_URL}/home/profile`,
         cancel_url: `${process.env.BASE_URL}/home/profile`,
