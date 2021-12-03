@@ -5,6 +5,7 @@ import Modal from "../../components/Modal";
 import MovieCard from "../../components/MovieCard";
 import { BASE_URL, SEARCH } from "../../utilities/ApiRequests";
 import Layout from "../../components/Layout"
+import Head from "next/head"
 
 export default function search({ movies }) {
   const isOpen = useRecoilValue(isModalOpenState);
@@ -12,6 +13,9 @@ export default function search({ movies }) {
 
   return (
     <Layout isAuth={true}>
+      <Head>
+        <title>Search results for "{router?.query?.name}" | Netflix Clone</title>
+      </Head>
       <div className="pt-20 px-4">
         {isOpen && (
           <Modal />
