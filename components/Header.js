@@ -57,19 +57,25 @@ export default function Header() {
         </Link>
 
         <motion.div 
-          className="max-w-7xl mx-auto overflow-hidden"
+          className="max-w-7xl ml-auto overflow-hidden"
           initial={animation.close} 
           animate={isSearchOpen ? animation.open : animation.close}
         >
-          <form onSubmit={handleSearch} className="w-[95%] mx-auto outline-none bg-white rounded-md flex items-center py-2 px-3">
+          <form 
+            onSubmit={handleSearch} 
+            className="w-[95%] mx-auto outline-none bg-gray-700 text-white rounded-md flex items-center py-2 px-3 relative"
+          >
             <input 
-              className="flex-grow outline-none "
+              className="flex-grow outline-none bg-transparent pr-5"
               type="text" 
               placeholder="Search movies..."
               onChange={(e) => setSearch(e.target.value)}
             />
-            <button type="submit" hidden></button>
-            <XIcon onClick={() => setIsSearchOpen(!isSearchOpen)} className="h-5 text-gray-400 cursor-pointer" />
+            <button type="submit" hidden className="hidden"></button>
+            <XIcon 
+              onClick={() => setIsSearchOpen(!isSearchOpen)} 
+              className="h-5 w-5 text-gray-400 cursor-pointer absolute right-3" 
+            />
           </form>
         </motion.div>
 
