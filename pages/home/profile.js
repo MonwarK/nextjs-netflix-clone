@@ -41,7 +41,7 @@ export default function profile() {
 
   return (
     <Layout isAuth={true}>
-      <div className="min-h-screen grid place-items-center">
+      <div className="min-h-screen grid place-items-center pt-20">
         <div className="max-w-3xl w-full">
           <h1 className="text-center text-4xl font-medium mb-5">Edit Profile</h1>
             <img

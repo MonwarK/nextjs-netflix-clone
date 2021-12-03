@@ -61,7 +61,7 @@ export default function Header() {
           initial={animation.close} 
           animate={isSearchOpen ? animation.open : animation.close}
         >
-          <form onSubmit={handleSearch} className="w-[95%] mx-auto outline-none bg-white rounded-md flex items-center p-3">
+          <form onSubmit={handleSearch} className="w-[95%] mx-auto outline-none bg-white rounded-md flex items-center py-2 px-3">
             <input 
               className="flex-grow outline-none "
               type="text" 
