@@ -19,7 +19,7 @@ export default function index() {
               type="text"
               placeholder="Email Address"
             />
-            <button className="btn p-2 md:p-5 md:text-xl md:font-semibold rounded-r-md">
+            <button className="btn p-2 md:p-5 md:text-xl md:font-semibold rounded-l-none rounded-r-md">
               Get Started
             </button>
           </div>

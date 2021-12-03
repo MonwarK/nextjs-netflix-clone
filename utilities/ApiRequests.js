@@ -5,12 +5,20 @@ const BASE_URL = "https://api.themoviedb.org/3/";
 
 const POPULAR_MOVIES = "movie/popular";
 const TOP_RATED = "movie/top_rated";
-const UPCOMING = "movie/upcoming"
+const UPCOMING = "movie/upcoming";
+const ACTION_MOVIES = `discover/movie?api_key=${API_KEY}&with_genres=28`;
+const COMEDY_MOVIES = `discover/movie?api_key=${API_KEY}&with_genres=35`;
+const HORROR_MOVIES = `discover/movie?api_key=${API_KEY}&with_genres=27`;
+const SEARCH = `search/movie?api_key=${API_KEY}&language=en-US&page=1&include_adult=false`
 
 export {
   VARIABLES,
   BASE_URL,
   POPULAR_MOVIES,
   TOP_RATED,
-  UPCOMING
+  UPCOMING,
+  ACTION_MOVIES,
+  COMEDY_MOVIES,
+  HORROR_MOVIES,
+  SEARCH
 }

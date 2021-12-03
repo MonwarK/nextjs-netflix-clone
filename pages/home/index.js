@@ -10,19 +10,27 @@ import {
   TOP_RATED,
   UPCOMING, 
   POPULAR_MOVIES, 
-  VARIABLES 
+  VARIABLES, 
+  ACTION_MOVIES,
+  COMEDY_MOVIES,
+  HORROR_MOVIES,
+  DOCUMENTARIES
 } from "../../utilities/ApiRequests";
 
 export default function Home({ 
   popularMovies,
   topRatedMovies,
-  upcomingMovies
+  upcomingMovies,
+  actionMovies,
+  comedyMovies,
+  horrorMovies,
+  documentaries
 }) {  
   const isOpen = useRecoilValue(isModalOpenState);
   const [featuredMovie, setFeaturedMovie] = useState();
 
   useEffect(() => {
-    const randomMovie = popularMovies[Math.round(Math.random() * 20)];
+    const randomMovie = popularMovies[Math.round(Math.random() * popularMovies.length)];
     setFeaturedMovie(randomMovie)
   }, [])
 
@@ -35,6 +43,9 @@ export default function Home({
       <MovieList title="Popular on Netflix" movies={popularMovies} />
       <MovieList title="Top Rated Movies" movies={topRatedMovies} />
       <MovieList title="Upcoming Movies" movies={upcomingMovies} />
+      <MovieList title="Action Movies" movies={actionMovies} />
+      <MovieList title="Comedy Movies" movies={comedyMovies} />
+      <MovieList title="Horror Movies" movies={horrorMovies} />
     </Layout>
   )
 }
@@ -52,11 +63,26 @@ export async function getStaticProps() {
                           .then(res => res.json())
                           .then(res => res.results)
 
+  const actionMovies = await fetch(BASE_URL + ACTION_MOVIES)
+                          .then(res => res.json())
+                          .then(res => res.results)
+
+  const comedyMovies = await fetch(BASE_URL + COMEDY_MOVIES)
+                          .then(res => res.json())
+                          .then(res => res.results)
+
+  const horrorMovies = await fetch(BASE_URL + HORROR_MOVIES)
+                          .then(res => res.json())
+                          .then(res => res.results)
+
   return {
     props: {
       popularMovies,
       topRatedMovies,
-      upcomingMovies
+      upcomingMovies,
+      actionMovies,
+      comedyMovies,
+      horrorMovies
     }
   }
 }
