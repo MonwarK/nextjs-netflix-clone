@@ -1,7 +1,6 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 export default async function createCheckoutSession(req, res) {
-  console.log(req.body)
   if (req.method === 'POST') {
     try {
       const session = await stripe.checkout.sessions.create({
@@ -14,6 +13,9 @@ export default async function createCheckoutSession(req, res) {
           },
         ],
         customer_email: req.body.email,
+        metadata: {
+          productId: req.body.productId,
+        },
         // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
         success_url: `${process.env.BASE_URL}/home/profile`,
         cancel_url: `${process.env.BASE_URL}/home/profile`,

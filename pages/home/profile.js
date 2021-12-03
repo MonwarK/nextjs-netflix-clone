@@ -1,9 +1,39 @@
 import SubscriptionItem from "../../components/SubscriptionItem";
-import { auth, signOut } from "../../utilities/firebase";
+import { auth, db, signOut } from "../../utilities/firebase";
 import router from "next/router"
 import Layout from "../../components/Layout";
+import { collection, doc, getDoc, onSnapshot, orderBy, query } from "@firebase/firestore";
+import { useEffect, useState } from "react";
 
 export default function profile() {
+  const [products, setProducts] = useState([])
+  const [subscriptionType, setSubscriptionType] = useState(false)
+
+  useEffect(async () => {
+    const unsubcribe = onSnapshot(
+      query(collection(db, "products"), orderBy("price", "asc")),
+      (snapshot) => {
+        setProducts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+        );
+      }
+    );
+
+    const docRef = doc(db, "users", auth.currentUser.email);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setSubscriptionType(docSnap.data()?.subscriptionType)
+    }
+
+    return () => {
+      unsubcribe();
+    };
+  }, [])
+
   const handleSignOut = () => {
     signOut();
     router.push("/")
@@ -27,9 +57,16 @@ export default function profile() {
             />
             <div className="flex-1">
               <h2 className="bg-gray-500 p-1 font-medium">{auth.currentUser?.email}</h2>
-              <SubscriptionItem name="Basic Plan" description="720p" priceId="price_1K2NEGEvfq3zpR6OvqrHVCSi" />
-              <SubscriptionItem name="Standard Plan" description="1080p" priceId="price_1K2NEpEvfq3zpR6OP4kzle31" />
-              <SubscriptionItem name="Premium Plan" description="4k + HDR" priceId="price_1K2NFLEvfq3zpR6OOtDhIW2i" />
+              {products?.map((product, i) => (
+                <SubscriptionItem 
+                  key={i}
+                  name={product.name} 
+                  description={product.description}
+                  priceId={product.priceId}
+                  productId={product.id}
+                  subscriptionType={subscriptionType}
+                />
+              ))}
               <button 
                 onClick={handleSignOut}
                 className="btn w-full duration-100 mt-4"
