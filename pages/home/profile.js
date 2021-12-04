@@ -2,36 +2,19 @@ import SubscriptionItem from "../../components/SubscriptionItem";
 import { auth, db, signOut } from "../../utilities/firebase";
 import router from "next/router"
 import Layout from "../../components/Layout";
-import { collection, doc, getDoc, onSnapshot, orderBy, query } from "@firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 
-export default function profile() {
-  const [products, setProducts] = useState([])
+export default function profile({ products }) {
   const [subscriptionType, setSubscriptionType] = useState(false)
 
   useEffect(async () => {
-    const unsubcribe = onSnapshot(
-      query(collection(db, "products"), orderBy("price", "asc")),
-      (snapshot) => {
-        setProducts(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data()
-          }))
-        );
-      }
-    );
-
     const docRef = doc(db, "users", auth.currentUser.email);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       setSubscriptionType(docSnap.data()?.subscriptionType)
     }
-
-    return () => {
-      unsubcribe();
-    };
   }, [])
 
   const handleSignOut = () => {
@@ -77,4 +60,24 @@ export default function profile() {
       </div>
     </Layout>
   )
+}
+
+export async function getServerSideProps() {
+  const productsRef = query(collection(db, "products"), orderBy("price", "asc"))
+  const productSnap = await getDocs(productsRef)
+
+  let products = [];
+
+  productSnap.forEach((doc) => {
+    products.push({ 
+      ...doc.data(), 
+      id: doc.id
+    });
+  });
+
+  return {
+    props: {
+      products,
+    }
+  }
 }

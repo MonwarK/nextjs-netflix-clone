@@ -10,7 +10,6 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState("")
-  
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -57,7 +56,7 @@ export default function Header() {
         </Link>
 
         <motion.div 
-          className="max-w-7xl ml-auto overflow-hidden"
+          className=" ml-auto overflow-hidden"
           initial={animation.close} 
           animate={isSearchOpen ? animation.open : animation.close}
         >
