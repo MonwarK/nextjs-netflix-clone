@@ -12,7 +12,7 @@ export default function MovieCard({ movie }) {
   };
 
   return (
-    <div onClick={openMovie} className="flex-none group w-80 h-48 relative hover:scale-110 duration-200 transition transform ease-out cursor-pointer hover:z-30">
+    <div onClick={openMovie} className="flex-none group w-80 h-48 relative hover:scale-110 duration-200 transition transform ease-out cursor-pointer hover:z-20">
       {movie.backdrop_path ? (
         <img 
           className="absolute w-full h-full object-cover rounded-md group-hover:brightness-50 z-0"
