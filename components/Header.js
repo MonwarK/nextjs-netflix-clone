@@ -56,7 +56,7 @@ export default function Header() {
         </Link>
 
         <motion.div 
-          className=" ml-auto overflow-hidden"
+          className=" ml-auto overflow-hidden md:max-w-xs"
           initial={animation.close} 
           animate={isSearchOpen ? animation.open : animation.close}
         >
