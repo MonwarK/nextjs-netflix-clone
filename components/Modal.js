@@ -10,13 +10,15 @@ export default function Modal() {
   const [videoId, setVideoId] = useState(null)
   const [isOpen, setIsOpen] = useRecoilState(isModalOpenState)
   const movie = useRecoilValue(movieState)
+
+  console.log(movie)
   
   useEffect(async () => {
-    const videoList = await fetch(BASE_URL + `movie/${movie.id}` + VARIABLES)
+    const videoList = await fetch(BASE_URL + `${movie.media_type}/${movie.id}/videos` + VARIABLES)
                         .then(res => res.json())
-                        .then(res => res.videos.results)
+                        .then(res => res.results)
 
-    setVideoId(videoList.filter((video) => video.type === "Trailer")?.[0]?.key)
+    setVideoId(movie.media_type === "movie" ? videoList.filter((video) => video.type === "Trailer")?.[0]?.key : videoList?.[0]?.key)
   }, [])
 
   const animation = {

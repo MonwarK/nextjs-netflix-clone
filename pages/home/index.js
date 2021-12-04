@@ -5,6 +5,7 @@ import FeaturedSection from '../../components/FeaturedSection';
 import Layout from '../../components/Layout';
 import Modal from '../../components/Modal';
 import MovieList from '../../components/MovieList';
+import OriginalsRow from '../../components/OriginalsRow';
 import { 
   BASE_URL, 
   TOP_RATED,
@@ -14,7 +15,7 @@ import {
   ACTION_MOVIES,
   COMEDY_MOVIES,
   HORROR_MOVIES,
-  DOCUMENTARIES
+  TRENDING
 } from "../../utilities/ApiRequests";
 
 export default function Home({ 
@@ -24,10 +25,12 @@ export default function Home({
   actionMovies,
   comedyMovies,
   horrorMovies,
-  documentaries
+  trendingMovies
 }) {  
   const isOpen = useRecoilValue(isModalOpenState);
   const [featuredMovie, setFeaturedMovie] = useState();
+
+  console.log(trendingMovies)
 
   useEffect(() => {
     const randomMovie = popularMovies[Math.round(Math.random() * popularMovies.length)];
@@ -40,6 +43,7 @@ export default function Home({
         <Modal />
       )}
       <FeaturedSection featuredMovie={featuredMovie} />  
+      <OriginalsRow title="Netflix Originals" movies={trendingMovies} />
       <MovieList title="Popular on Netflix" movies={popularMovies} />
       <MovieList title="Top Rated Movies" movies={topRatedMovies} />
       <MovieList title="Upcoming Movies" movies={upcomingMovies} />
@@ -51,6 +55,10 @@ export default function Home({
 }
 
 export async function getStaticProps() {
+  const trendingMovies = await fetch(BASE_URL + TRENDING)
+                        .then(res => res.json())
+                        .then(res => res.results)
+
   const popularMovies = await fetch(BASE_URL + POPULAR_MOVIES + VARIABLES)
                           .then(res => res.json())
                           .then(res => res.results)
@@ -82,7 +90,8 @@ export async function getStaticProps() {
       upcomingMovies,
       actionMovies,
       comedyMovies,
-      horrorMovies
+      horrorMovies,
+      trendingMovies
     }
   }
 }
