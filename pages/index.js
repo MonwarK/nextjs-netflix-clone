@@ -1,6 +1,20 @@
+import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { emailState } from "../atoms/emailAtom";
 import Layout from "../components/Layout";
+import router from "next/router"
 
 export default function index() {
+  const [textBoxValue, setTextBoxValue] = useState("");
+  const [email, setEmail] = useRecoilState(emailState);
+
+  const submitForm = (e) => {
+    e.preventDefault();
+
+    setEmail(textBoxValue);
+    router.push("/register");
+  };
+
   return (
     <Layout isAuth={false}>
       <div className="h-screen grid place-items-center">
@@ -13,16 +27,22 @@ export default function index() {
           <h1 className="text-2xl sm:text-5xl font-bold">Unlimited films, TV programmes and more.</h1>
           <h2 className="text-xl sm:text-2xl my-5">Watch anywhere. Cancel at any time.</h2>
           <p className="text-lg sm:text-xl mb-4">Ready to watch? Enter your email to create or restart your membership.</p>
-          <div className="flex">
+          <form onSubmit={submitForm} className="flex">
             <input
+              value={textBoxValue}
+              onChange={(e) => setTextBoxValue(e.target.value)}
               className="text-gray-700 flex-1 p-2 sm:p-4 outline-none rounded-l-md"
-              type="text"
+              type="email"
               placeholder="Email Address"
+              required
             />
-            <button className="btn p-2 md:p-5 md:text-xl md:font-semibold rounded-l-none rounded-r-md">
+            <button 
+              className="btn p-2 md:p-5 md:text-xl md:font-semibold rounded-l-none rounded-r-md"
+              type="submit"
+            >
               Get Started
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </Layout>

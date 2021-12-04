@@ -1,10 +1,13 @@
 import Link from "next/link"
 import { useState } from "react"
+import { useRecoilValue } from "recoil"
+import { emailState } from "../atoms/emailAtom"
 import Layout from "../components/Layout"
 import { signUp } from "../utilities/firebase"
 
 export default function register() {
-  const [email, setEmail] = useState("")
+  const savedEmail = useRecoilValue(emailState)
+  const [email, setEmail] = useState(savedEmail)
   const [password, setPassword] = useState("")
 
   const register = async () => {
@@ -25,6 +28,7 @@ export default function register() {
           <div className="bg-black px-10 py-10 bg-opacity-75 max-w-sm">
             <h1 className="text-4xl font-semibold my-5">Sign Up</h1>
             <input
+              value={email}
               className="bg-gray-700 w-full p-3 rounded-lg mb-4 outline-none"
               type="email"
               placeholder="Email"
