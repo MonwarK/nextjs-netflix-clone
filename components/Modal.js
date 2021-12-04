@@ -7,26 +7,26 @@ import { XIcon } from "@heroicons/react/solid"
 import { motion } from 'framer-motion';
 
 export default function Modal() {
-  const [videoId, setVideoId] = useState(null)
-  const [isOpen, setIsOpen] = useRecoilState(isModalOpenState)
-  const movie = useRecoilValue(movieState)
-
-  console.log(movie)
+  const [videoId, setVideoId] = useState(null);
+  const [isOpen, setIsOpen] = useRecoilState(isModalOpenState);
+  const movie = useRecoilValue(movieState);
   
   useEffect(async () => {
-    const videoList = await fetch(BASE_URL + `${movie.media_type}/${movie.id}/videos` + VARIABLES)
-                        .then(res => res.json())
-                        .then(res => res.results)
+    const type = movie.media_type ? movie.media_type : "movie";
 
-    setVideoId(movie.media_type === "movie" ? videoList.filter((video) => video.type === "Trailer")?.[0]?.key : videoList?.[0]?.key)
+    const videoList = await fetch(BASE_URL + `${type}/${movie.id}` + VARIABLES)
+                        .then(res => res.json())
+                        .then(res => res.videos.results)
+
+    setVideoId(movie.media_type === "tv" ? videoList?.[0]?.key : videoList?.filter((video) => video.type === "Trailer")?.[0]?.key)
   }, [])
 
   const animation = {
     initial: {
-      scale: 0
+      scale: 0,
     }, 
     animate: {
-      scale: 1
+      scale: 1,
     }
   }
 

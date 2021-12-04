@@ -30,8 +30,6 @@ export default function Home({
   const isOpen = useRecoilValue(isModalOpenState);
   const [featuredMovie, setFeaturedMovie] = useState();
 
-  console.log(trendingMovies)
-
   useEffect(() => {
     const randomMovie = popularMovies[Math.round(Math.random() * popularMovies.length)];
     setFeaturedMovie(randomMovie)
