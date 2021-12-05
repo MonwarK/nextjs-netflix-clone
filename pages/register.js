@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil"
 import { emailState } from "../atoms/emailAtom"
 import Layout from "../components/Layout"
 import { signUp } from "../utilities/firebase"
+import router from "next/router"
 
 export default function register() {
   const savedEmail = useRecoilValue(emailState)
