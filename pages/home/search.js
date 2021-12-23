@@ -8,7 +8,6 @@ import Layout from "../../components/Layout"
 import Head from "next/head"
 
 export default function search({ movies }) {
-  const isOpen = useRecoilValue(isModalOpenState);
   const router = useRouter();
 
   return (
@@ -17,9 +16,7 @@ export default function search({ movies }) {
         <title>Search results for "{router?.query?.name}" | Netflix Clone</title>
       </Head>
       <div className="pt-20 px-4">
-        {isOpen && (
-          <Modal />
-        )}
+        <Modal />
         <h1 className="text-2xl mb-5">Search results for "{router?.query?.name}"</h1>
         <div className="flex flex-wrap justify-center gap-3">
           {movies.map((movie, i) => (

@@ -20,22 +20,32 @@ export default function Modal() {
                         .then(res => res.videos.results)
 
     setVideoId(movie.media_type === "tv" ? videoList?.[0]?.key : videoList?.filter((video) => video.type === "Trailer")?.[0]?.key)
-  }, [])
+  }, [movie])
 
   const animation = {
     initial: {
+      display: "flex",
       top: "100%",
     }, 
     animate: {
       top: 0,
+    },
+    close: {
+      top: "100%",
+      delay: 1,
+      display: "hidden"
     }
   }
-  console.log(movie)
+
+  const close = () => {
+    setVideoId(null);
+    setIsOpen(false);
+  }
 
   return (
     <motion.div 
       initial={animation.initial}
-      animate={animation.animate}
+      animate={isOpen ? animation.animate : animation.close}
       transition={{
         type: "just"
       }}
@@ -43,12 +53,14 @@ export default function Modal() {
     >
       <div className='overflow-y-auto scrollbar-thumb-gray-800 scrollbar-thin'>
         <div className='my-5 max-w-screen-lg mx-auto p-3'>
-          <div className="relative w-full h-[27rem] mx-auto my-4">
-            <YouTube
-              className="absolute w-full h-full m-auto top-0 left-0 right-0 bottom- z-0"
-              videoId={videoId}
-              id={videoId}
-            />
+          <div className="relative w-full h-[27rem] mx-auto my-4 border border-gray-700">
+            {isOpen && videoId && (
+              <YouTube
+                className="absolute w-full h-full m-auto top-0 left-0 right-0 bottom- z-0"
+                videoId={videoId}
+                id={videoId}
+              />
+            )}
           </div>
           <h1 className='text-3xl font-medium'>{movie.title}</h1>
           <div className='flex space-x-3 items-center my-2'>
@@ -56,7 +68,7 @@ export default function Modal() {
             <p className='font-medium text-green-500'>New</p>
           )}
           <p>{releaseYear}</p>
-          <p>{movie.vote_average}</p>
+          <p className='border px-2'>{movie.vote_average}</p>
           <p className='px-1 bg-gray-500 text-black rounded-md font-semibold'>
             HD
           </p> 
@@ -69,7 +81,7 @@ export default function Modal() {
       </div>
       <button 
         className='bg-gray-900 hover:bg-gray-700 duration-200 p-3'
-        onClick={() => setIsOpen(false)}
+        onClick={close}
       >
         Close
       </button>

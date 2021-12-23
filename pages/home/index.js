@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { isModalOpenState } from '../../atoms/movieAtom';
 import FeaturedSection from '../../components/FeaturedSection';
 import Layout from '../../components/Layout';
 import Modal from '../../components/Modal';
@@ -27,7 +25,6 @@ export default function Home({
   horrorMovies,
   trendingMovies
 }) {  
-  const isOpen = useRecoilValue(isModalOpenState);
   const [featuredMovie, setFeaturedMovie] = useState();
 
   useEffect(() => {
@@ -37,9 +34,6 @@ export default function Home({
 
   return (
     <Layout isAuth={true}>
-      {isOpen && (
-        <Modal />
-      )}
       <FeaturedSection featuredMovie={featuredMovie} />  
       <OriginalsRow title="Netflix Originals" movies={trendingMovies} />
       <MovieList title="Popular on Netflix" movies={popularMovies} />
@@ -48,6 +42,7 @@ export default function Home({
       <MovieList title="Action Movies" movies={actionMovies} />
       <MovieList title="Comedy Movies" movies={comedyMovies} />
       <MovieList title="Horror Movies" movies={horrorMovies} />
+      <Modal />
     </Layout>
   )
 }
