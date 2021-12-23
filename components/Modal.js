@@ -10,7 +10,8 @@ export default function Modal() {
   const [videoId, setVideoId] = useState(null);
   const [isOpen, setIsOpen] = useRecoilState(isModalOpenState);
   const movie = useRecoilValue(movieState);
-  
+  const releaseYear = movie?.release_date?.substring(0,4);
+
   useEffect(async () => {
     const type = movie.media_type ? movie.media_type : "movie";
 
@@ -23,31 +24,55 @@ export default function Modal() {
 
   const animation = {
     initial: {
-      scale: 0,
+      top: "100%",
     }, 
     animate: {
-      scale: 1,
+      top: 0,
     }
   }
-
+  console.log(movie)
 
   return (
-    <>
-     <div className="bg-black opacity-60 top-0 left-0 w-full h-full fixed z-40" />
-     <div className="fixed top-0 left-0 h-full w-full grid place-items-center z-50">
-      <motion.div 
-        initial={animation.initial}
-        animate={animation.animate}
-        className="relative w-full max-w-2xl h-[27rem]"
+    <motion.div 
+      initial={animation.initial}
+      animate={animation.animate}
+      transition={{
+        type: "just"
+      }}
+      className="fixed left-0 h-screen w-full z-50 bg-black flex flex-col justify-between"
+    >
+      <div className='overflow-y-auto scrollbar-thumb-gray-800 scrollbar-thin'>
+        <div className='my-5 max-w-screen-lg mx-auto p-3'>
+          <div className="relative w-full h-[27rem] mx-auto my-4">
+            <YouTube
+              className="absolute w-full h-full m-auto top-0 left-0 right-0 bottom- z-0"
+              videoId={videoId}
+              id={videoId}
+            />
+          </div>
+          <h1 className='text-3xl font-medium'>{movie.title}</h1>
+          <div className='flex space-x-3 items-center my-2'>
+          {releaseYear >= (new Date().getFullYear() - 3 ) && (
+            <p className='font-medium text-green-500'>New</p>
+          )}
+          <p>{releaseYear}</p>
+          <p>{movie.vote_average}</p>
+          <p className='px-1 bg-gray-500 text-black rounded-md font-semibold'>
+            HD
+          </p> 
+          </div>
+          <div>
+            <h2 className='font-medium text-xl mb-3'>Overview</h2>
+            <p>{movie.overview}</p>
+          </div>
+        </div>
+      </div>
+      <button 
+        className='bg-gray-900 hover:bg-gray-700 duration-200 p-3'
+        onClick={() => setIsOpen(false)}
       >
-        <XIcon onClick={() => setIsOpen(false)} className="h-7 w-7 absolute top-3 right-0 cursor-pointer" />
-        <YouTube
-          className="absolute w-[90%] h-[80%] m-auto top-0 left-0 right-0 bottom-0"
-          videoId={videoId}
-          id={videoId}
-        />
-      </motion.div>
-     </div>
-    </>
+        Close
+      </button>
+    </motion.div>
   )
 }

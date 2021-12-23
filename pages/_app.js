@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }) {
       ) : (
         <>
           <Header />
-          <div className="min-h-screen text-white bg-black">
+          <div className="min-h-screen text-white bg-black scrollbar-hide">
             <Component {...pageProps} />
           </div>
         </>

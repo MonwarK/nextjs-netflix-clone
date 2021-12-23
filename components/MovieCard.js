@@ -5,7 +5,6 @@ export default function MovieCard({ movie }) {
   const [selectedMovie, setSelectedMovie] = useRecoilState(movieState);
   const [isOpen, setIsOpen] = useRecoilState(isModalOpenState);
 
-
   const openMovie = () => {
     setSelectedMovie(movie);
     setIsOpen(true);
