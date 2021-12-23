@@ -12,14 +12,16 @@ export default function Modal() {
   const releaseYear = movie?.release_date?.substring(0,4);
 
   useEffect(async () => {
-    const type = movie.media_type ? movie.media_type : "movie";
-
-    const videoList = await fetch(BASE_URL + `${type}/${movie.id}` + VARIABLES)
-                        .then(res => res.json())
-                        .then(res => res.videos.results)
-
-    setVideoId(movie.media_type === "tv" ? videoList?.[0]?.key : videoList?.filter((video) => video.type === "Trailer")?.[0]?.key)
-  }, [movie])
+    if (isOpen) {
+      const type = movie.media_type ? movie.media_type : "movie";
+  
+      const videoList = await fetch(BASE_URL + `${type}/${movie.id}` + VARIABLES)
+                          .then(res => res.json())
+                          .then(res => res.videos.results)
+  
+      setVideoId(movie.media_type === "tv" ? videoList?.[0]?.key : videoList?.filter((video) => video.type === "Trailer")?.[0]?.key)
+    }
+  }, [movie, isOpen])
 
   const animation = {
     initial: {
