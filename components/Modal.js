@@ -3,7 +3,6 @@ import YouTube from 'react-youtube';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { isModalOpenState, movieState } from '../atoms/movieAtom';
 import { BASE_URL, VARIABLES } from '../utilities/ApiRequests';
-import { XIcon } from "@heroicons/react/solid"
 import { motion } from 'framer-motion';
 
 export default function Modal() {
@@ -32,17 +31,20 @@ export default function Modal() {
     },
     close: {
       top: "100%",
-      delay: 1,
       display: "hidden"
     }
   }
 
   const close = () => {
-    setVideoId(null);
     setIsOpen(false);
+
+    setTimeout(() => {
+      setVideoId(null);
+    }, 250);
   }
 
   return (
+    videoId &&
     <motion.div 
       initial={animation.initial}
       animate={isOpen ? animation.animate : animation.close}

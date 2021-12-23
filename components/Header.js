@@ -4,6 +4,7 @@ import { auth } from "../utilities/firebase";
 import { SearchIcon, XIcon } from "@heroicons/react/solid";
 import { motion } from "framer-motion";
 import router from "next/router"
+import Image from "next/image"
 
 export default function Header() {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -48,8 +49,11 @@ export default function Header() {
     <>
       <div className={`flex items-center justify-between w-full fixed h-20 z-30 ${scrollPosition > 15 && "bg-black"} transition duration-200`}>
         <Link href={isLoggedIn ? "/home" : "/"}>
-          <img 
-            className="w-32 h-16 object-contain cursor-pointer"
+          <Image 
+            width={128}
+            height={64}
+            objectFit="contain"
+            className="cursor-pointer"
             src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c529.png"
             alt="Netflix"
           />
@@ -78,15 +82,17 @@ export default function Header() {
           </form>
         </motion.div>
 
-        <div className="flex items-center space-x-4 mx-4">
+        <div className="flex items-center mx-4">
           {isLoggedIn ? (
             <>
               {!isSearchOpen && (
-                <SearchIcon onClick={() => setIsSearchOpen(!isSearchOpen)} className="h-6 text-gray-200 transition duration-150 hover:scale-125 cursor-pointer" />
+                <SearchIcon onClick={() => setIsSearchOpen(!isSearchOpen)} className="h-6 text-gray-200 transition duration-150 hover:scale-125 cursor-pointer mr-4" />
               )}
               <Link href="/home/profile">
-                <img
-                  className="w-10 h-10 object-cover cursor-pointer"
+                <Image
+                  width={40}
+                  height={40}
+                  className="cursor-pointer"
                   src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
                   alt="profile"
                 />
